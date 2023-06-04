@@ -1,7 +1,7 @@
 import {TopicEnum} from "../../../../../debate-zone-micro-service-common-library/src/kafka/topicsEnum";
 import {kafka} from "../config";
 import {newNotification} from "../../services/notificationService";
-import {NewNotification} from "../../types";
+import {InviteToDebateZoneNotification, NewNotification} from "../../types";
 
 export const consumeInviteToDebateZoneNotification = async () => {
     const consumer = kafka.consumer({groupId: "debate-zone"})
@@ -13,10 +13,14 @@ export const consumeInviteToDebateZoneNotification = async () => {
                 if (message.value === null) {
                     console.error("message.value is null")
                 } else {
-                    let notification: NewNotification
+                    let inviteToDebateZoneNotification: InviteToDebateZoneNotification
                     try {
-                        notification = JSON.parse(message.value.toString())
-                        await newNotification(notification)
+                        inviteToDebateZoneNotification = JSON.parse(message.value.toString())
+                        const notification = await newNotification({
+                            producerUserId: inviteToDebateZoneNotification.userId,
+                            consumerUserId: inviteToDebateZoneNotification.userId,
+                            data: inviteToDebateZoneNotification,
+                        })
                         console.info(`Notification consumed successfully, notification: ${JSON.stringify(notification)}`)
                     } catch (e) {
                         console.error(e)

@@ -1,6 +1,8 @@
 import {
+    inviteToDebateZoneNotificationSchema,
     newNotificationSchema,
-    notificationSchema, outputNotificationListSchema,
+    notificationSchema,
+    outputNotificationListSchema,
     outputNotificationSchema,
     updateNotificationSchema
 } from "./zodSchema"
@@ -15,3 +17,5 @@ export type OutputNotification = z.infer<typeof outputNotificationSchema>
 export type NewNotification = z.infer<typeof newNotificationSchema>
 
 export type OutputNotificationList = z.infer<typeof outputNotificationListSchema>
+
+export type InviteToDebateZoneNotification = z.infer<typeof inviteToDebateZoneNotificationSchema>
