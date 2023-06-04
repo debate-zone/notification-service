@@ -2,6 +2,6 @@ import { BaseDbController } from '../../../debate-zone-micro-service-common-libr
 import {Notification} from "./types";
 import {notificationMongooseModel} from "./mongooseSchema";
 
-class NotificationDbConroller extends BaseDbController<Notification> {}
+class NotificationDbController extends BaseDbController<Notification> {}
 
-export const notificationDbController = new NotificationDbConroller(notificationMongooseModel);
+export const notificationDbController = new NotificationDbController(notificationMongooseModel);

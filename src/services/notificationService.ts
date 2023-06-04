@@ -22,5 +22,5 @@ export const readNotification = async (id: string): Promise<OutputNotification> 
 }
 
 export const newNotification = async (notification: NewNotification) => {
-    return await notificationDbController.save({}, notification)
+    return await notificationDbController.create(notification)
 }

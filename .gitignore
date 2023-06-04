@@ -2,3 +2,7 @@
 /.idea/
 /.vscode/
 /.vscode-test/
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
