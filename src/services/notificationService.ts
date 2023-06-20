@@ -6,10 +6,19 @@ import {
     OutputNotificationList,
 } from '../types';
 
-export const getNotifications = async (): Promise<OutputNotificationList> => {
+export const getNotifications = async (
+    userId: string,
+): Promise<OutputNotificationList> => {
     const notifications: Notification[] =
         await notificationDbController.findAll({
-            isRead: false,
+            $and: [
+                {
+                    isRead: false,
+                },
+                {
+                    consumerUserId: userId,
+                },
+            ],
         });
     return {
         notifications: notifications.map(notification => {
@@ -21,11 +30,13 @@ export const getNotifications = async (): Promise<OutputNotificationList> => {
 
 export const readNotification = async (
     id: string,
+    userId: string,
 ): Promise<OutputNotification> => {
     const readNotification: Notification | null =
         await notificationDbController.save(
             {
                 _id: id,
+                consumerUserId: userId,
             },
             {
                 isRead: true,

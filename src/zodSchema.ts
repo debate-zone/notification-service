@@ -30,6 +30,11 @@ export const outputNotificationListSchema = z.object({
 });
 
 export const inviteToDebateZoneNotificationSchema = z.object({
+    producerUserId: idObjectIdsSchema,
+    producerUserFullName: z.string(),
+    debateZoneId: idObjectIdsSchema,
+    debateZoneTitle: z.string(),
+    debateZoneShortDescription: z.string(),
     userId: idObjectIdsSchema,
     role: z.string(),
     email: z.string().optional(),

@@ -1,4 +1,4 @@
-import { defaultEndpointsFactory } from 'express-zod-api';
+import { createMiddleware, defaultEndpointsFactory } from 'express-zod-api';
 import {
     outputNotificationListSchema,
     outputNotificationSchema,
@@ -10,7 +10,23 @@ import {
     readNotification,
 } from './services/notificationService';
 
-export const getNotificationsEndpoint = defaultEndpointsFactory.build({
+export const authMiddleware = createMiddleware({
+    input: z.object({}),
+    middleware: async ({ input: {}, request, logger }) => {
+        const userId = request.headers['x-user-id'] as string;
+        const userRole = request.headers['x-user-role'] as string;
+
+        return {
+            userId,
+            userRole,
+        };
+    },
+});
+
+export const endpointsFactory =
+    defaultEndpointsFactory.addMiddleware(authMiddleware);
+
+export const getNotificationsEndpoint = endpointsFactory.build({
     method: 'get',
     input: z.object({}),
     output: outputNotificationListSchema,
@@ -20,11 +36,11 @@ export const getNotificationsEndpoint = defaultEndpointsFactory.build({
         logger,
     }): Promise<OutputNotificationList> => {
         logger.debug('Options:', options);
-        return await getNotifications();
+        return await getNotifications(options.userId);
     },
 });
 
-export const readNotificationEndpoint = defaultEndpointsFactory.build({
+export const readNotificationEndpoint = endpointsFactory.build({
     method: 'put',
     input: z.object({
         id: z.string(),
@@ -36,6 +52,6 @@ export const readNotificationEndpoint = defaultEndpointsFactory.build({
         logger,
     }): Promise<OutputNotification> => {
         logger.debug('Options:', options);
-        return await readNotification(input.id);
+        return await readNotification(input.id, options.userId);
     },
 });
