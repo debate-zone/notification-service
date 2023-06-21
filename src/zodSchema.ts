@@ -25,6 +25,9 @@ export const outputNotificationSchema = notificationSchema.omit({
     __v: true,
 });
 
+export const outputIsReadNotificationSchema = z.object({
+    isRead: z.boolean()
+})
 export const outputNotificationListSchema = z.object({
     notifications: z.array(outputNotificationSchema),
 });

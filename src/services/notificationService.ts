@@ -1,7 +1,7 @@
 import { notificationDbController } from '../dbController';
 import {
     NewNotification,
-    Notification,
+    Notification, OutputIsReadNotification,
     OutputNotification,
     OutputNotificationList,
 } from '../types';
@@ -27,6 +27,19 @@ export const getNotifications = async (
         }),
     };
 };
+
+export const isReadNotification = async (
+    userId: string,
+
+): Promise<OutputIsReadNotification> => {
+    const notification: Notification | null =
+        await notificationDbController.findOne(
+            {
+                consumerUserId: userId
+            }
+        )
+    return {isRead: !notification}
+}
 
 export const readNotification = async (
     id: string,
