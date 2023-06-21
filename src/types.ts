@@ -1,7 +1,7 @@
 import {
     inviteToDebateZoneNotificationSchema,
     newNotificationSchema,
-    notificationSchema,
+    notificationSchema, outputIsReadNotificationSchema,
     outputNotificationListSchema,
     outputNotificationSchema,
     updateNotificationSchema,
@@ -23,3 +23,5 @@ export type OutputNotificationList = z.infer<
 export type InviteToDebateZoneNotification = z.infer<
     typeof inviteToDebateZoneNotificationSchema
 >;
+
+export type OutputIsReadNotification = z.infer<typeof outputIsReadNotificationSchema>

@@ -2,12 +2,14 @@ import { createMiddleware, defaultEndpointsFactory } from 'express-zod-api';
 import {
     outputNotificationListSchema,
     outputNotificationSchema,
+    outputIsReadNotificationSchema
 } from './zodSchema';
 import { z } from 'zod';
-import { OutputNotification, OutputNotificationList } from './types';
+import {OutputIsReadNotification, OutputNotification, OutputNotificationList} from './types';
 import {
     getNotifications,
     readNotification,
+    isReadNotification
 } from './services/notificationService';
 
 export const authMiddleware = createMiddleware({
@@ -55,3 +57,19 @@ export const readNotificationEndpoint = endpointsFactory.build({
         return await readNotification(input.id, options.userId);
     },
 });
+
+
+export const isReadNotificationEndPoint = endpointsFactory.build({
+    method: 'get',
+    input: z.object({}),
+    output: outputIsReadNotificationSchema,
+    handler: async ({
+                        input,
+                        options,
+                        logger,
+                    }): Promise<OutputIsReadNotification> => {
+        logger.debug('Options:', options);
+        return await isReadNotification(options.userId);
+    },
+
+})
