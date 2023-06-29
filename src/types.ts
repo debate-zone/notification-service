@@ -25,3 +25,9 @@ export type InviteToDebateZoneNotification = z.infer<
 >;
 
 export type OutputIsReadNotification = z.infer<typeof outputIsReadNotificationSchema>
+
+export enum Type {
+    Invited = "invited",
+    Joined = "joined",
+    Left = "left"
+}

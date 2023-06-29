@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import { Document, Schema } from 'mongoose';
-import { Notification } from './types';
+import {Notification, Type} from './types';
 import { baseSchema } from '../../debate-zone-micro-service-common-library/src/mongoose/baseSchema';
 import { CollectionsEnum } from '../../debate-zone-micro-service-common-library/src/enums/collectionsEnum';
 
@@ -23,6 +23,10 @@ export const notificationMongooseSchema: mongoose.Schema = baseSchema.add({
         type: Boolean,
         default: false,
     },
+    type: {
+        type: String,
+        enum: Object.values(Type)
+    }
 });
 
 export const notificationMongooseModel = mongoose.model<MongooseDocument>(
