@@ -1,6 +1,8 @@
 import Mailgun from 'mailgun.js';
 import { IMailgunClient } from 'mailgun.js/Interfaces';
 const formData = require('form-data');
+import 'dotenv/config';
+import { BaseKafkaMessage } from '../../../debate-zone-micro-service-common-library/src/kafka/types';
 
 class MailgunService {
     private mailgun: Mailgun;
@@ -15,19 +17,25 @@ class MailgunService {
         });
     }
 
-    async sendEmail(
-        email: string,
+    async sendEmail<T extends BaseKafkaMessage>(
         subject: string,
-        body: string,
-        fullName?: string,
+        variables: T,
+        template: string = '',
     ) {
         const domain = process.env.MAILGUN_DOMAIN_NAME || '';
         this.mailgunClient.messages
             .create(domain, {
-                from: `Debate Zone <no-reply@${domain}>`,
-                to: [`${fullName} <${email}>`],
+                from: `Debate Zone <reply-me@${domain}>`,
+                to: [
+                    `${
+                        variables.consumerFullName
+                            ? variables.consumerFullName
+                            : ''
+                    } <${variables.consumerEmail}>`,
+                ],
                 subject: subject,
-                text: body,
+                template: template,
+                'h:X-Mailgun-Variables': JSON.stringify(variables),
             })
             .then(msg => console.info(msg))
             .catch(err => console.error(err));
