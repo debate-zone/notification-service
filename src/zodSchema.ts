@@ -3,11 +3,13 @@ import {
     baseZodSchema,
     idObjectIdsSchema,
 } from '../../debate-zone-micro-service-common-library/src/zod/baseZodSchema';
+import {Type} from "./types";
 export const notificationSchema = baseZodSchema.extend({
     producerUserId: idObjectIdsSchema,
     consumerUserId: idObjectIdsSchema,
     data: z.any(),
     isRead: z.boolean(),
+    type: z.nativeEnum(Type).optional()
 });
 
 export const newNotificationSchema = notificationSchema.omit({

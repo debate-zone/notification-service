@@ -9,7 +9,7 @@ import {OutputIsReadNotification, OutputNotification, OutputNotificationList} fr
 import {
     getNotifications,
     readNotification,
-    isReadNotification
+    isReadNotification, readAll
 } from './services/notificationService';
 
 export const authMiddleware = createMiddleware({
@@ -57,6 +57,20 @@ export const readNotificationEndpoint = endpointsFactory.build({
         return await readNotification(input.id, options.userId);
     },
 });
+
+export const readAllNotifications = endpointsFactory.build({
+    method: 'put',
+    input: z.object({}),
+    output: z.object({}),
+    handler: async ({
+        input,
+        options,
+        logger
+    }): Promise<OutputNotificationList> => {
+        await readAll(options.userId)
+        return await getNotifications(options.userId)
+    }
+})
 
 
 export const isReadNotificationEndPoint = endpointsFactory.build({

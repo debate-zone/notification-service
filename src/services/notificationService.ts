@@ -5,6 +5,7 @@ import {
     OutputNotification,
     OutputNotificationList,
 } from '../types';
+import {readAllNotifications} from "../endpoint";
 
 export const getNotifications = async (
     userId: string,
@@ -35,7 +36,8 @@ export const isReadNotification = async (
     const notification: Notification | null =
         await notificationDbController.findOne(
             {
-                consumerUserId: userId
+                consumerUserId: userId,
+                isRead: false
             }
         )
     return {isRead: !notification}
@@ -45,11 +47,18 @@ export const readNotification = async (
     id: string,
     userId: string,
 ): Promise<OutputNotification> => {
+
     const readNotification: Notification | null =
         await notificationDbController.save(
             {
-                _id: id,
-                consumerUserId: userId,
+                $and: [
+                    {
+                        _id: id
+                    },
+                    {
+                        consumerUserId: userId
+                    }
+                ]
             },
             {
                 isRead: true,
@@ -64,6 +73,10 @@ export const readNotification = async (
 
     return rest;
 };
+
+export const readAll = async (userId: string) => {
+    await notificationDbController.setAsReadForAll(userId)
+}
 
 export const newNotification = async (notification: NewNotification) => {
     return await notificationDbController.create(notification);

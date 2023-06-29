@@ -1,12 +1,13 @@
-import { TopicEnum } from '../../../../debate-zone-micro-service-common-library/src/kafka/topicsEnum';
-import { kafka } from '../config';
-import { newNotification } from '../../services/notificationService';
-import { mailgunService } from '../../services/mailgunService';
+import {TopicEnum} from '../../../../debate-zone-micro-service-common-library/src/kafka/topicsEnum';
+import {kafka} from '../config';
+import {newNotification} from '../../services/notificationService';
+import {mailgunService} from '../../services/mailgunService';
 import {
     InvitedUserToDebate,
     JoinedToDebate,
 } from '../../../../debate-zone-micro-service-common-library/src/kafka/types';
-import { getEmailByUserId } from '../../services/notificationUserService';
+import {getEmailByUserId} from '../../services/notificationUserService';
+import {Type} from "../../types";
 
 export const consumeKafkaEvents = async () => {
     const consumer = kafka.consumer({ groupId: 'debate-zone' });
@@ -44,6 +45,7 @@ export const consumeKafkaEvents = async () => {
                                         consumerUserId:
                                             joinedToDebateZoneNotification.consumerUserId,
                                         data: data,
+                                        type: Type.Joined
                                     });
 
                                 console.info(
@@ -88,6 +90,7 @@ export const consumeKafkaEvents = async () => {
                                         consumerUserId:
                                             inviteToDebateZoneNotification.consumerUserId,
                                         data: inviteToDebateZoneNotification,
+                                        type: Type.Invited
                                     });
                                 console.info(
                                     `Notification consumed successfully, notification: ${JSON.stringify(
