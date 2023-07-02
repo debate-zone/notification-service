@@ -1,7 +1,8 @@
 import {
     inviteToDebateZoneNotificationSchema,
     newNotificationSchema,
-    notificationSchema, outputIsReadNotificationSchema,
+    notificationSchema,
+    outputIsReadNotificationSchema,
     outputNotificationListSchema,
     outputNotificationSchema,
     updateNotificationSchema,
@@ -24,10 +25,6 @@ export type InviteToDebateZoneNotification = z.infer<
     typeof inviteToDebateZoneNotificationSchema
 >;
 
-export type OutputIsReadNotification = z.infer<typeof outputIsReadNotificationSchema>
-
-export enum Type {
-    Invited = "invited",
-    Joined = "joined",
-    Left = "left"
-}
+export type OutputIsReadNotification = z.infer<
+    typeof outputIsReadNotificationSchema
+>;

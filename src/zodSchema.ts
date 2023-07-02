@@ -3,13 +3,15 @@ import {
     baseZodSchema,
     idObjectIdsSchema,
 } from '../../debate-zone-micro-service-common-library/src/zod/baseZodSchema';
-import {Type} from "./types";
+import { Type } from '../../../common-library/src/notifications/types';
+
 export const notificationSchema = baseZodSchema.extend({
     producerUserId: idObjectIdsSchema,
     consumerUserId: idObjectIdsSchema,
     data: z.any(),
     isRead: z.boolean(),
-    type: z.nativeEnum(Type).optional()
+    type: z.nativeEnum(Type).optional(),
+    entityId: idObjectIdsSchema.optional(),
 });
 
 export const newNotificationSchema = notificationSchema.omit({
@@ -28,8 +30,8 @@ export const outputNotificationSchema = notificationSchema.omit({
 });
 
 export const outputIsReadNotificationSchema = z.object({
-    isRead: z.boolean()
-})
+    isRead: z.boolean(),
+});
 export const outputNotificationListSchema = z.object({
     notifications: z.array(outputNotificationSchema),
 });
